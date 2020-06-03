@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bar {
+  fill: rgb(7, 164, 255);
+
+  &:hover {
+    fill: grayscale($color: #fff);
+  }
+}
+
+text {
+  font-family: sans-serif;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+text#title {
+  font-size: 3em !important;
+  font-weight: 500;
+  text-anchor: middle;
+}
+#tooltip {
+  rect {
+    fill: rgb(134, 133, 132);
+    box-shadow: 0 0 3 rgba(0, 0, 0, 0.37);
+  }
+  text {
+    white-space: pre-wrap;
+  }
+}
