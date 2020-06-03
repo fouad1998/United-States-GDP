@@ -23,11 +23,20 @@ text#title {
   text-anchor: middle;
 }
 #tooltip {
-  rect {
-    fill: rgb(134, 133, 132);
-    box-shadow: 0 0 3 rgba(0, 0, 0, 0.37);
-  }
-  text {
-    white-space: pre-wrap;
+  position: fixed;
+  width: 250px;
+  height: 60px;
+  padding: 5px 0;
+  z-index: 5;
+  background: rgb(134, 133, 132);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.548);
+  text-align: center;
+  font-size: 1.25em;
+  font-family: sans-serif;
+
+  strong {
+    font-size: 1.5em;
+    display: inline-block;
+    width: 100%;
   }
 }

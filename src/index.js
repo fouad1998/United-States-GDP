@@ -3,7 +3,7 @@ import './style.scss'
 
 function draw(dataFetched) {
   const height = 512
-  const width = 1024
+  const width = 768
   const SVG = d3
     .select('#root')
     .attr('width', width)
@@ -35,6 +35,10 @@ function draw(dataFetched) {
           : 'Q4'
       return `${DATE[0]} ${Q}`
     }
+
+    const tooltip = d3.select('body').append('div')
+    tooltip.style('display', 'none').attr('id', 'tooltip').style('position', 'fixed')
+
     const plotG = SVG.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
     plotG
       .selectAll('rect')
@@ -49,28 +53,25 @@ function draw(dataFetched) {
       .attr('data-date', d => xValue(d))
       .attr('data-gdp', d => yValue(d))
       .on('mouseover', function () {
-        tooltip.attr('display', 'block')
+        tooltip.style('display', 'block')
       })
       .on('mouseout', function () {
-        tooltip.attr('display', 'none')
+        tooltip.style('display', 'none')
       })
       .on('mousemove', function () {
         const xPos =
-          d3.mouse(this)[0] + 200 < width ? d3.mouse(this)[0] + 10 : d3.mouse(this)[0] - 100
+          d3.mouse(this)[0] + 450 < width ? d3.mouse(this)[0] + 200 : d3.mouse(this)[0] - 200
         const yPos = d3.mouse(this)[1]
         tooltip
-          .attr('x', xPos)
-          .attr('y', yPos)
           .attr('data-date', this.getAttribute('data-date'))
-          .select('text')
-          .attr('x', xPos)
-          .attr('y', yPos)
-          .text(
-            `${reformateDate(this.getAttribute('data-date'))}\n${this.getAttribute('data-gdp')}`
+          .style('left', xPos + 'px')
+          .style('top', yPos + 'px')
+          .html(
+            `<strong>${reformateDate(
+              this.getAttribute('data-date')
+            )}</strong><br>${this.getAttribute('data-gdp')} Billion`
           )
       })
-    const tooltip = SVG.append('g').attr('display', 'none').attr('id', 'tooltip')
-    tooltip.append('text')
   }
 
   function axes() {
