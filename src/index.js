@@ -1,6 +1,31 @@
 import * as d3 from 'd3'
 import './style.scss'
 
+d3.selection.prototype.position = function () {
+  var el = this.node()
+  var elPos = el.getBoundingClientRect()
+  var vpPos = getVpPos(el)
+
+  function getVpPos(el) {
+    if (el.tagName === 'svg') {
+      return el.parentElement.getBoundingClientRect()
+    }
+    if (el.parentElement.tagName === 'svg') {
+      return el.parentElement.getBoundingClientRect()
+    }
+    return getVpPos(el.parentElement)
+  }
+
+  return {
+    top: elPos.top - vpPos.top,
+    left: elPos.left - vpPos.left,
+    width: elPos.width,
+    bottom: elPos.bottom - vpPos.top,
+    height: elPos.height,
+    right: elPos.right - vpPos.left,
+  }
+}
+
 function draw(dataFetched) {
   const height = 512
   const width = 768
@@ -59,8 +84,12 @@ function draw(dataFetched) {
         tooltip.style('display', 'none')
       })
       .on('mousemove', function () {
+        const xPosA = d3.mouse(this)[0]
+        console.log(SVG.position().left, xPosA)
         const xPos =
-          d3.mouse(this)[0] + 450 < width ? d3.mouse(this)[0] + 200 : d3.mouse(this)[0] - 200
+          xPosA + 300 <= width
+            ? xPosA + SVG.position().left + 100
+            : xPosA + SVG.position().left - 200
         const yPos = d3.mouse(this)[1]
         tooltip
           .attr('data-date', this.getAttribute('data-date'))
